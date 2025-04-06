@@ -1,0 +1,46 @@
+[tool.poetry]
+name = "appsnxt-platform"
+version = "1.0.0"
+description = "FastAPI-based multi-tenant SaaS backend for AppsNxt Cloud Solutions"
+authors = ["Koushik S koushiksathish3@gmail.com"]
+license = "MIT"
+packages = [{ include = "app" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.115.12"
+uvicorn = "^0.34.0"
+python-dotenv = "^1.0.1"
+pydantic = "^2.10.6"
+SQLAlchemy = "^2.0.39"
+asyncpg = "^0.30.0"
+alembic = "^1.15.1"
+bcrypt = "^4.3.0"
+pyjwt = "^2.10.1"
+cryptography = "^44.0.2"
+supabase = "^2.14.0"
+tenacity = "^9.0.0"
+loguru = "^0.7.3"
+opentelemetry-api = "^1.31.1"
+opentelemetry-sdk = "^1.31.1"
+opentelemetry-exporter-otlp = "^1.31.1"
+sentry-sdk = "^2.24.1"
+redis = "^5.2.1"
+celery = "^5.4.0"
+slowapi = "^0.1.9"
+asgi-gzip = "^0.2"
+pydantic-settings = "^2.8.1"
+greenlet = "^3.1.1"
+email-validator = "^2.2.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.3.5"
+pytest-asyncio = "^0.26.0"
+httpx = "^0.28.1"
+black = "^25.1.0"
+isort = "^6.0.1"
+pre-commit = "^4.2.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -175,3 +175,66 @@ appsnxt-platform/
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Docker Setup
+
+This application can be run using Docker for easier deployment and development.
+
+### Prerequisites
+
+- Docker
+- Docker Compose
+
+### Quick Start
+
+1. Build the Docker images:
+   ```bash
+   ./docker.sh build
+   ```
+
+2. Start the containers:
+   ```bash
+   ./docker.sh up
+   ```
+
+3. Run database migrations:
+   ```bash
+   ./docker.sh migrate
+   ```
+
+4. Access the application at http://localhost:8000
+
+### Docker Commands
+
+The `docker.sh` script provides several commands to help with Docker operations:
+
+- `build`: Build the Docker images
+- `up`: Start the containers in detached mode
+- `down`: Stop and remove the containers
+- `logs`: View logs from the containers
+- `shell`: Open a shell in the app container
+- `migrate`: Run database migrations
+- `test`: Run tests in the container
+- `help`: Show help message
+
+Example:
+```bash
+./docker.sh logs
+```
+
+### Environment Variables
+
+The following environment variables can be configured in the `docker-compose.yml` file:
+
+- `DATABASE_URL`: PostgreSQL connection string
+- `SECRET_KEY`: Secret key for JWT tokens
+- `ENVIRONMENT`: Application environment (development, production)
+
+### Production Deployment
+
+For production deployment, you should:
+
+1. Update the environment variables in `docker-compose.yml`
+2. Use a production-grade PostgreSQL instance
+3. Set up proper logging and monitoring
+4. Configure HTTPS with a reverse proxy like Nginx

@@ -1,14 +1,18 @@
 FROM python:3.11-slim
 
+# Set working directory
 WORKDIR /app
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    POETRY_VERSION=1.7.1 \
+    PYTHONPATH=/app \
+    POETRY_VERSION=1.5.1 \
     POETRY_HOME="/opt/poetry" \
-    POETRY_VIRTUALENVS_IN_PROJECT=false \
-    POETRY_NO_INTERACTION=1
+    POETRY_VIRTUALENVS_CREATE=false
+
+# Add Poetry to PATH
+ENV PATH="$POETRY_HOME/bin:$PATH"
 
 # Install system dependencies
 RUN apt-get update \
@@ -16,29 +20,26 @@ RUN apt-get update \
         curl \
         build-essential \
         libpq-dev \
-    && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
-RUN curl -sSL https://install.python-poetry.org | python3 - \
-    && ln -s /opt/poetry/bin/poetry /usr/local/bin/poetry \
-    && poetry --version
+RUN curl -sSL https://install.python-poetry.org | python3 -
 
-# Copy only requirements to cache them in docker layer
-COPY pyproject.toml poetry.lock* ./
+# Copy poetry files
+COPY pyproject.toml poetry.lock ./
 
 # Install dependencies
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-dev --no-interaction --no-ansi
+RUN poetry install --no-interaction --no-ansi --no-root
 
-# Copy project files
+# Copy application code
 COPY . .
 
-# Create non-root user for security
-RUN adduser --disabled-password --gecos "" appuser \
-    && chown -R appuser:appuser /app
+# Create a non-root user
+RUN useradd -m appuser && chown -R appuser:appuser /app
 USER appuser
 
-# Run migrations and start the application
-CMD poetry run alembic upgrade head && \
-    poetry run uvicorn app.main:app --host 0.0.0.0 --port 8000
+# Expose port
+EXPOSE 8000
+
+# Command to run the application
+CMD ["poetry", "run", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
